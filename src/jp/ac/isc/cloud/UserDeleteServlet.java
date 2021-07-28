@@ -8,10 +8,10 @@ import javax.servlet.annotation.*;
 import javax.servlet.http.*;
 
 /**
- * Servlet implementation class UserInsertServlet
+ * Servlet implementation class UserDeleteServlet
  */
-@WebServlet("/UserInsertServlet")
-public class UserInsertServlet extends HttpServlet {
+@WebServlet("/UserDeleteServlet")
+public class UserDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -31,12 +31,10 @@ public class UserInsertServlet extends HttpServlet {
 			try {
 				request.setCharacterEncoding("utf-8");
 				Class.forName("com.mysql.jdbc.Driver");
-				users = DriverManager.getConnection("jdbc:mysql://localhost/servlet_db?useUnicode=true&characterEncoding=utf8","root","");
-				String id = request.getParameter("insertId");
-				String name = request.getParameter("insertName");
-				String picture = request.getParameter("insertPicture");
+				users = DriverManager.getConnection("jdbc:mysql://localhost/servlet_db","root","");
+				String id = request.getParameter("deleteId");
 				Statement state = users.createStatement();
-				state.executeUpdate("INSERT INTO user_table VALUE('" + id + "','" + name + "','" + picture + "')");
+				state.executeUpdate("DELETE FROM user_table WHERE id='" + id + "'");
 				state.close();
 				users.close();
 				response.sendRedirect("/select"); //UserSelectServletを呼び出す

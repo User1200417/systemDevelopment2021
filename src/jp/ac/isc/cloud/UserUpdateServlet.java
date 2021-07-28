@@ -8,10 +8,10 @@ import javax.servlet.annotation.*;
 import javax.servlet.http.*;
 
 /**
- * Servlet implementation class UserInsertServlet
+ * Servlet implementation class UserUpdateServlet
  */
-@WebServlet("/UserInsertServlet")
-public class UserInsertServlet extends HttpServlet {
+@WebServlet("/UserUpdateServlet")
+public class UserUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -30,20 +30,25 @@ public class UserInsertServlet extends HttpServlet {
 			Connection users = null;
 			try {
 				request.setCharacterEncoding("utf-8");
-				Class.forName("com.mysql.jdbc.Driver");
+				Class.forName ("com.mysql.jdbc.Driver");
 				users = DriverManager.getConnection("jdbc:mysql://localhost/servlet_db?useUnicode=true&characterEncoding=utf8","root","");
-				String id = request.getParameter("insertId");
-				String name = request.getParameter("insertName");
-				String picture = request.getParameter("insertPicture");
-				Statement state = users.createStatement();
-				state.executeUpdate("INSERT INTO user_table VALUE('" + id + "','" + name + "','" + picture + "')");
-				state.close();
-				users.close();
-				response.sendRedirect("/select"); //UserSelectServletを呼び出す
-			}catch(ClassNotFoundException e) {
+					String id = request.getParameter("updateId");
+					String name= request.getParameter("updateName");
+					String picture= request.getParameter("updatePicture");
+					Statement state = users.createStatement();
+					if(name.length()!= 0){
+						state.executeUpdate("UPDATE user_table SET name = '" + name + "' WHERE id = '" + id + "'");
+					}
+					if(picture.length()!= 0){
+						state.executeUpdate("UPDATE user_table SET picture = '" + picture + "' WHERE id = '" + id + "'");
+					}
+					state.close();
+					users.close();
+					response.sendRedirect("/ select"); // UserSelectServletをこれ
+			} catch(ClassNotFoundException e){
 				e.printStackTrace();
 			}
-		}catch(SQLException e){
+		} catch(SQLException e){
 			e.printStackTrace();
 		}
 	}
