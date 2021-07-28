@@ -25,30 +25,31 @@ public class UserUpdateServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		try {
 			Connection users = null;
 			try {
 				request.setCharacterEncoding("utf-8");
-				Class.forName ("com.mysql.jdbc.Driver");
-				users = DriverManager.getConnection("jdbc:mysql://localhost/servlet_db?useUnicode=true&characterEncoding=utf8","root","");
+				Class.forName("com.mysql.jdbc.Driver");
+					users = DriverManager.getConnection("jdbc:mysql://localhost/servlet_db?useUnicode=true&characterEncoding=utf8","root","");
 					String id = request.getParameter("updateId");
-					String name= request.getParameter("updateName");
-					String picture= request.getParameter("updatePicture");
+					String name = request.getParameter("updateName");
+					String picture = request.getParameter("updatePicture");
 					Statement state = users.createStatement();
-					if(name.length()!= 0){
-						state.executeUpdate("UPDATE user_table SET name = '" + name + "' WHERE id = '" + id + "'");
+					if(name.length() != 0){
+						state.executeUpdate("UPDATE user_table SET name='" + name + "' WHERE id ='" + id + "'");
 					}
-					if(picture.length()!= 0){
-						state.executeUpdate("UPDATE user_table SET picture = '" + picture + "' WHERE id = '" + id + "'");
+					if(picture.length() != 0){
+						state.executeUpdate("UPDATE user_table SET picture='" + picture + "' WHERE id ='" + id + "'");
 					}
 					state.close();
 					users.close();
-					response.sendRedirect("/ select"); // UserSelectServletをこれ
-			} catch(ClassNotFoundException e){
+					response.sendRedirect("/select");	//UserSelectServletを呼び出す
+			}catch(ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-		} catch(SQLException e){
+		}catch(SQLException e){
 			e.printStackTrace();
 		}
 	}
